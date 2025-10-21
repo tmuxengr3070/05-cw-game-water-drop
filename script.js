@@ -33,6 +33,10 @@ function startGame() {
 
   // Create new drops every second (1000 milliseconds)
   dropMaker = setInterval(createDrop, 1000);
+
+  // Hide end message if present
+  const messageElem = document.getElementById("end-message");
+  if (messageElem) messageElem.style.display = "none";
 }
 
 // Add this function to update score display
@@ -52,6 +56,38 @@ function endGame() {
   clearInterval(dropMaker);
   clearInterval(timerInterval);
   gameRunning = false;
+  showEndMessage();
+}
+
+// Show end-of-game message based on score
+function showEndMessage() {
+  const container = document.getElementById("game-container");
+  let messageElem = document.getElementById("end-message");
+  if (!messageElem) {
+    messageElem = document.createElement("div");
+    messageElem.id = "end-message";
+    messageElem.style.position = "absolute";
+    messageElem.style.bottom = "20px";
+    messageElem.style.left = "50%";
+    messageElem.style.transform = "translateX(-50%)";
+    messageElem.style.width = "90%";
+    messageElem.style.textAlign = "center";
+    messageElem.style.fontSize = "28px";
+    messageElem.style.fontWeight = "bold";
+    messageElem.style.color = "#333";
+    messageElem.style.background = "rgba(255,255,255,0.85)";
+    messageElem.style.borderRadius = "8px";
+    messageElem.style.padding = "16px";
+    container.appendChild(messageElem);
+  }
+  if (score >= 20) {
+    messageElem.textContent = "Congratulations! You win!";
+    messageElem.style.color = "#2E9DF7";
+  } else {
+    messageElem.textContent = "Try again! Score 20 or more to win.";
+    messageElem.style.color = "#FFC907";
+  }
+  messageElem.style.display = "block";
 }
 
 function createDrop() {
