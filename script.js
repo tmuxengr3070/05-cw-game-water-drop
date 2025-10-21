@@ -1,6 +1,9 @@
 // Variables to control game state
 let gameRunning = false; // Keeps track of whether game is active or not
 let dropMaker; // Will store our timer that creates drops regularly
+let score = 0;
+let timer = 30;
+let timerInterval;
 
 // Wait for button click to start the game
 document.getElementById("start-btn").addEventListener("click", startGame);
@@ -11,14 +14,54 @@ function startGame() {
 
   gameRunning = true;
 
+  // Reset score and timer at game start
+  score = 0;
+  timer = 30;
+  updateScore();
+  updateTimer();
+
+  // Start timer countdown
+  timerInterval = setInterval(() => {
+    timer--;
+    updateTimer();
+    if (timer <= 0) {
+      endGame();
+    }
+  }, 1000);
+
   // Create new drops every second (1000 milliseconds)
   dropMaker = setInterval(createDrop, 1000);
+}
+
+// Add this function to update score display
+function updateScore() {
+  const scoreElem = document.getElementById("score");
+  if (scoreElem) scoreElem.textContent = score;
+}
+
+// Add this function to update timer display
+function updateTimer() {
+  const timerElem = document.getElementById("timer");
+  if (timerElem) timerElem.textContent = timer;
+}
+
+// End the game: stop intervals, prevent more drops, optionally show message
+function endGame() {
+  gameRunning = false;
+  clearInterval(dropMaker);
+  clearInterval(timerInterval);
+  // Optionally, disable start button or show a message
 }
 
 function createDrop() {
   // Create a new div element that will be our water drop
   const drop = document.createElement("div");
   drop.className = "water-drop";
+
+  // Assign one of two random solid colors
+  const dropColors = ["#2E9DF7", "#FFC907"];
+  const color = dropColors[Math.floor(Math.random() * dropColors.length)];
+  drop.style.backgroundColor = color;
 
   // Make drops different sizes for visual variety
   const initialSize = 60;
@@ -37,6 +80,17 @@ function createDrop() {
 
   // Add the new drop to the game screen
   document.getElementById("game-container").appendChild(drop);
+
+  // Score logic for clicking drops
+  drop.addEventListener("click", () => {
+    if (color === "#2E9DF7") {
+      score += 1;
+    } else if (color === "#FFC907") {
+      score -= 1;
+    }
+    updateScore();
+    drop.remove();
+  });
 
   // Remove drops that reach the bottom (weren't clicked)
   drop.addEventListener("animationend", () => {
