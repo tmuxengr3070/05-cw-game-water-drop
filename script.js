@@ -7,6 +7,7 @@ let timerInterval;
 
 // Wait for button click to start the game
 document.getElementById("start-btn").addEventListener("click", startGame);
+document.getElementById("restart-btn").addEventListener("click", restartGame);
 
 function startGame() {
   // Prevent multiple games from running at once
@@ -88,6 +89,25 @@ function showEndMessage() {
     messageElem.style.color = "#FFC907";
   }
   messageElem.style.display = "block";
+}
+
+function restartGame() {
+  // Stop any running intervals
+  clearInterval(dropMaker);
+  clearInterval(timerInterval);
+  gameRunning = false;
+
+  // Remove all drops
+  const container = document.getElementById("game-container");
+  const drops = container.querySelectorAll(".water-drop");
+  drops.forEach(drop => drop.remove());
+
+  // Hide end message if present
+  const messageElem = document.getElementById("end-message");
+  if (messageElem) messageElem.style.display = "none";
+
+  // Start a new game
+  startGame();
 }
 
 function createDrop() {
