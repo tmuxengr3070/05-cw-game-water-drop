@@ -14,15 +14,17 @@ function startGame() {
 
   gameRunning = true;
 
-  // Reset score and timer at game start
+  // Reset score at game start
   score = 0;
-  timer = 30;
   updateScore();
+
+  // Reset and display timer
+  timer = 30;
   updateTimer();
 
-  // Start timer countdown
+  // Start countdown timer
   timerInterval = setInterval(() => {
-    timer--;
+    timer -= 1;
     updateTimer();
     if (timer <= 0) {
       endGame();
@@ -41,16 +43,15 @@ function updateScore() {
 
 // Add this function to update timer display
 function updateTimer() {
-  const timerElem = document.getElementById("timer");
+  const timerElem = document.querySelector(".timer");
   if (timerElem) timerElem.textContent = timer;
 }
 
-// End the game: stop intervals, prevent more drops, optionally show message
+// End the game when timer reaches 0
 function endGame() {
-  gameRunning = false;
   clearInterval(dropMaker);
   clearInterval(timerInterval);
-  // Optionally, disable start button or show a message
+  gameRunning = false;
 }
 
 function createDrop() {
