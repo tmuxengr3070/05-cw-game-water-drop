@@ -83,11 +83,45 @@ function showEndMessage() {
   if (score >= 20) {
     messageElem.textContent = "Congratulations! You win!";
     messageElem.style.color = "#2E9DF7";
+    showConfetti("good");
   } else {
     messageElem.textContent = "Try again! Score 20 or more to win.";
     messageElem.style.color = "#FFC907";
+    showConfetti("bad");
   }
   messageElem.style.display = "block";
+}
+
+// Confetti effect function
+function showConfetti(type) {
+  const container = document.getElementById("game-container");
+  const confettiColors = type === "good"
+    ? ["#FFC907", "#2E9DF7"]
+    : ["#BF6C46", "#FF902A"];
+  for (let i = 0; i < 40; i++) {
+    const confetti = document.createElement("div");
+    confetti.style.position = "absolute";
+    confetti.style.width = "10px";
+    confetti.style.height = "18px";
+    confetti.style.borderRadius = "3px";
+    confetti.style.background = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+    confetti.style.left = Math.random() * (container.offsetWidth - 10) + "px";
+    confetti.style.top = "-20px";
+    confetti.style.opacity = "0.85";
+    confetti.style.zIndex = "1000";
+    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+    // Animate confetti falling
+    const fallDistance = 500 + Math.random() * 100;
+    confetti.animate([
+      { top: "-20px", opacity: 0.85 },
+      { top: `${fallDistance}px`, opacity: 0.2 }
+    ], {
+      duration: 1800 + Math.random() * 600,
+      easing: "ease-in"
+    });
+    container.appendChild(confetti);
+    setTimeout(() => confetti.remove(), 2000);
+  }
 }
 
 function createDrop() {
