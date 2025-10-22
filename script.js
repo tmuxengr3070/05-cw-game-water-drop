@@ -96,7 +96,7 @@ function createDrop() {
   drop.className = "water-drop";
 
   // All drops start as solid color #003366
-  drop.style.backgroundColor = "#003366";
+  drop.style.background = "radial-gradient(ellipse at center 60%, #003366 60%, #77A8BB 100%)";
 
   // Randomly assign drop type: good or bad
   const isGood = Math.random() < 0.5; // 50% chance
@@ -122,15 +122,16 @@ function createDrop() {
   // Score logic for clicking drops
   drop.addEventListener("click", () => {
     if (isGood) {
-      drop.style.backgroundColor = "#FFC907";
+      drop.style.background = "radial-gradient(ellipse at center 60%, #FFC907 60%, #FFF7D6 100%)";
       score += 1;
+      document.getElementById("good-sound").play();
     } else {
-      drop.style.backgroundColor = "#BF6C46";
+      drop.style.background = "radial-gradient(ellipse at center 60%, #BF6C46 60%, #FFD6C1 100%)";
       score -= 1;
+      document.getElementById("bad-sound").play();
     }
     updateScore();
-    // Remove after color change effect
-    setTimeout(() => drop.remove(), 150);
+    setTimeout(() => drop.remove(), 200);
   });
 
   // Remove drops that reach the bottom (weren't clicked)
