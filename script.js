@@ -116,7 +116,7 @@ function createDrop() {
   drop.className = "water-drop";
 
   // Assign one of two random solid colors
-  const dropColors = ["#2E9DF7", "#FFC907"];
+  const dropColors = ["#003366", "#FFC907"];
   const color = dropColors[Math.floor(Math.random() * dropColors.length)];
   drop.style.backgroundColor = color;
 
