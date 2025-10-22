@@ -95,10 +95,11 @@ function createDrop() {
   const drop = document.createElement("div");
   drop.className = "water-drop";
 
-  // Assign one of two random solid colors
-  const dropColors = ["#2E9DF7", "#FFC907"];
-  const color = dropColors[Math.floor(Math.random() * dropColors.length)];
-  drop.style.backgroundColor = color;
+  // All drops start as solid color #003366
+  drop.style.backgroundColor = "#003366";
+
+  // Randomly assign drop type: good or bad
+  const isGood = Math.random() < 0.5; // 50% chance
 
   // Make drops different sizes for visual variety
   const initialSize = 60;
@@ -120,13 +121,16 @@ function createDrop() {
 
   // Score logic for clicking drops
   drop.addEventListener("click", () => {
-    if (color === "#2E9DF7") {
+    if (isGood) {
+      drop.style.backgroundColor = "#FFC907";
       score += 1;
-    } else if (color === "#FFC907") {
+    } else {
+      drop.style.backgroundColor = "#BF6C46";
       score -= 1;
     }
     updateScore();
-    drop.remove();
+    // Remove after color change effect
+    setTimeout(() => drop.remove(), 150);
   });
 
   // Remove drops that reach the bottom (weren't clicked)
