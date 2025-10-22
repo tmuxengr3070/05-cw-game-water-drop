@@ -7,7 +7,6 @@ let timerInterval;
 
 // Wait for button click to start the game
 document.getElementById("start-btn").addEventListener("click", startGame);
-document.getElementById("restart-btn").addEventListener("click", restartGame);
 
 function startGame() {
   // Prevent multiple games from running at once
@@ -91,32 +90,13 @@ function showEndMessage() {
   messageElem.style.display = "block";
 }
 
-function restartGame() {
-  // Stop any running intervals
-  clearInterval(dropMaker);
-  clearInterval(timerInterval);
-  gameRunning = false;
-
-  // Remove all drops
-  const container = document.getElementById("game-container");
-  const drops = container.querySelectorAll(".water-drop");
-  drops.forEach(drop => drop.remove());
-
-  // Hide end message if present
-  const messageElem = document.getElementById("end-message");
-  if (messageElem) messageElem.style.display = "none";
-
-  // Start a new game
-  startGame();
-}
-
 function createDrop() {
   // Create a new div element that will be our water drop
   const drop = document.createElement("div");
   drop.className = "water-drop";
 
   // Assign one of two random solid colors
-  const dropColors = ["#003366", "#FFC907"];
+  const dropColors = ["#2E9DF7", "#FFC907"];
   const color = dropColors[Math.floor(Math.random() * dropColors.length)];
   drop.style.backgroundColor = color;
 
@@ -153,4 +133,27 @@ function createDrop() {
   drop.addEventListener("animationend", () => {
     drop.remove(); // Clean up drops that weren't caught
   });
+}
+
+// Add event listener for restart button
+document.getElementById("restart-btn").addEventListener("click", restartGame);
+
+function restartGame() {
+  // Stop any running intervals
+  clearInterval(dropMaker);
+  clearInterval(timerInterval);
+  gameRunning = false;
+
+  // Remove all drops
+  const container = document.getElementById("game-container");
+  while (container.firstChild) {
+    container.removeChild(container.firstChild);
+  }
+
+  // Hide end message if present
+  const messageElem = document.getElementById("end-message");
+  if (messageElem) messageElem.style.display = "none";
+
+  // Start a new game
+  startGame();
 }
